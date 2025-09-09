@@ -1,0 +1,14 @@
+{
+  "name": "webrtc-signal-server",
+  "version": "1.0.0",
+  "description": "Servidor WebSocket para sinalização WebRTC (Cliente-Servidor Android)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.17.0"
+  },
+  "author": "Kira",
+  "license": "MIT"
+}
