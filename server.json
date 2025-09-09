@@ -1,0 +1,30 @@
+const WebSocket = require('ws');
+
+// Usa porta do ambiente (Heroku/Render) ou 8080 local
+const PORT = process.env.PORT || 8080;
+const wss = new WebSocket.Server({ port: PORT });
+
+let clients = [];
+
+wss.on('connection', function connection(ws) {
+  clients.push(ws);
+  console.log("Novo cliente conectado. Total:", clients.length);
+
+  ws.on('message', function incoming(message) {
+    console.log('Mensagem recebida: %s', message);
+
+    // Repassa mensagem para todos os outros clientes
+    clients.forEach(function(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  });
+
+  ws.on('close', function() {
+    clients = clients.filter(c => c !== ws);
+    console.log("Cliente desconectado. Total:", clients.length);
+  });
+});
+
+console.log("Servidor WebSocket rodando na porta " + PORT);
